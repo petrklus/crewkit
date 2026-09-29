@@ -40,6 +40,8 @@ In each project (the kit's own files are below, under "The kit"):
 
     crew/README.md         a pointer to this kit
     crew/prefix            optional: one word, the session-name prefix (`acme` for a project in acme-shop/)
+    crew/THEME.md          where seat names come from: canon, pool, citation shape. Written by /crew:adopt
+                           from the kit's THEME.md (Stargate); the project's to edit, never overwritten
     crew/ROSTER.md         every seat: pronouns, date declared, where the name comes from, renames
     crew/<seat>/SEAT.md    the seat's card, written by the seat: name, pronouns, role, how it works
     crew/<seat>/diary.md   append-only; one entry per session, newest last; the last entry is the handoff
@@ -51,14 +53,12 @@ In each project (the kit's own files are below, under "The kit"):
 
 1. Launch with a placeholder: `crew-wake new`. The hook sees there is no `crew/new/SEAT.md` and says so, and
    `crew-wake` opens the session with a prompt to act on it, so the seat sets itself up without being asked.
-2. The session picks its own name from the house canon, *Stargate SG-1* and *Stargate Atlantis*
-   characters, checks this project's roster for clashes (names are unique within a project; another project
-   may have its own Zelenka), declares its pronouns and a
-   one-line reason for the name, and writes `crew/<name>/SEAT.md`, `diary.md` (header only) and
-   `laurels.md`, plus a row in `ROSTER.md`. Directory names are lowercase ASCII (`tealc`, not `Teal'c`).
-   Pool, unclaimed unless the roster says otherwise: O'Neill, Carter, Daniel, Teal'c, Hammond, Fraiser,
-   Walter, Siler, Bra'tac, Jonas, Mitchell, Vala, Landry; Sheppard, Weir, McKay, Teyla, Ronon, Beckett,
-   Zelenka, Lorne, Woolsey, Keller, Ford, Chuck, Todd.
+2. The session picks its own name from the project's theme (`crew/THEME.md`; the kit's `THEME.md`,
+   *Stargate SG-1* and *Stargate Atlantis*, if the project has none; the hook names the file), checks this
+   project's roster for clashes (names are unique within a project; another project may have its own
+   Zelenka), declares its pronouns and a one-line citation for the name as the theme shapes it, and writes
+   `crew/<name>/SEAT.md`, `diary.md` (header only) and `laurels.md`, plus a row in `ROSTER.md`. Directory
+   names are lowercase ASCII (`tealc`, not `Teal'c`).
 3. Relaunch with `crew-wake <name>`.
 
 ## Renaming a seat
@@ -85,6 +85,7 @@ seat write a diary entry about it. It inherits everything; the record keeps the 
     skills/handoff/          /crew:handoff, "take a beat, then hand off"
     skills/adopt/            /crew:adopt, sets the kit up in a new project
     PRIME.md                 the beads rules; the SessionStart hook copies it to the project's .beads/PRIME.md
+    THEME.md                 the default theme (Stargate); /crew:adopt copies it to the project's crew/THEME.md
     bin/crew-wake            the launcher
     CHANGELOG.md             every release and what changed in it
 
@@ -113,7 +114,8 @@ different versions would keep flipping it.
 
 ### Adopt a project
 
-In the project, run `/crew:adopt`, then `crew-wake new` to seat its first crew member.
+In the project, run `/crew:adopt`, edit `crew/THEME.md` if the seats should take their names from somewhere
+other than Stargate, then `crew-wake new` to seat its first crew member.
 
 ### Change the kit
 

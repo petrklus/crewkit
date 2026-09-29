@@ -28,11 +28,13 @@ explains seats and beads. Skip any step that is already done. Do not commit unle
 
        # Roster
 
-       House canon: characters from *Stargate SG-1* and *Stargate Atlantis*.
+       Seat names come from the theme in THEME.md.
 
        | Seat | Pronouns | Declared | Name from | Notes |
        |------|----------|----------|-----------|-------|
 
+   Copy the kit's `THEME.md` (kit root) to `crew/THEME.md`: the Stargate default, which the user may edit
+   before seating anyone.
    If the folder name is long, ask the user for a one-word session-name prefix and write it to `crew/prefix`.
 4. **Existing task lists.** A TODO.md (or similar) becomes a pointer; its old content stays in git history.
    Name that commit in the pointer:
@@ -86,4 +88,5 @@ explains seats and beads. Skip any step that is already done. Do not commit unle
 7. **Check and hand over.** `bd export -o .beads/issues.jsonl`. Run the kit's hook as a new session would,
    `echo '{}' | CLAUDE_PROJECT_DIR=$PWD <kit root>/hooks/session-start.sh`, and check it prints the beads
    workflow and "## No seat". Close the bead with what changed and how it was checked. Report `git status`
-   and tell the user to seat the first crew member with `crew-wake new`.
+   and tell the user that `crew/THEME.md` is theirs to edit (where seat names come from), then to seat the
+   first crew member with `crew-wake new`.

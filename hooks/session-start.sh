@@ -26,7 +26,9 @@ fi
 d="crew/$SEAT"
 if [ ! -f "$d/SEAT.md" ]; then
   echo "## New seat: $SEAT"
-  echo "crew/$SEAT/SEAT.md does not exist yet. Before any other work, follow 'Adding a seat' in $kit/README.md: pick your name (it may differ from '$SEAT'), pronouns and a citation, write the files, add the roster row, and tell the user to relaunch with crew-wake <name>."
+  # The project's theme wins; projects adopted before THEME.md existed get the kit's default (Stargate).
+  theme=crew/THEME.md; [ -f "$theme" ] || theme="$kit/THEME.md"
+  echo "crew/$SEAT/SEAT.md does not exist yet. Before any other work, follow 'Adding a seat' in $kit/README.md: pick your name from the theme in $theme (it may differ from '$SEAT'), pronouns and a citation, write the files, add the roster row, and tell the user to relaunch with crew-wake <name>."
   exit 0
 fi
 echo "# You are $SEAT (pronouns and history in crew/$SEAT/SEAT.md)"

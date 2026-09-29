@@ -3,6 +3,13 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.2.0 (2026-09-29)
+
+- Configurable theme: seat names come from `crew/THEME.md` (canon, pool, citation shape), which the
+  project may edit before seating anyone. `/crew:adopt` writes it from the kit's new `THEME.md`, the
+  Stargate default; the kit never overwrites it. Projects without one keep Stargate: the hook's "New seat"
+  note names the theme file to use, the project's or the kit's.
+
 ## 1.1.1 (2026-09-29)
 
 - `crew-wake` starts a seat that has no `SEAT.md` yet with an initial prompt, so `crew-wake new` sets the
