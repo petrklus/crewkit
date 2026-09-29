@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "crewkit",
+  "description": "Crew seats and a beads work log for Claude Code.",
+  "owner": {
+    "name": "Petr Klus"
+  },
+  "plugins": [
+    {
+      "name": "crew",
+      "description": "Crew seats and the beads work log for Claude Code.",
+      "source": "./"
+    }
+  ]
+}

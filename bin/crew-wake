@@ -1,0 +1,20 @@
+#!/bin/sh
+# Wake a seat: crew-wake <seat> [claude args...], run from the project root (see README.md).
+# Sets SEAT for the hooks and BEADS_ACTOR so every bd write is attributed to the seat.
+if [ ! -d crew ]; then
+  echo "crew-wake: no crew/ here. Run it from the root of a project that uses the crew kit (/crew:adopt sets one up)."
+  exit 1
+fi
+seat=$1
+if [ -z "$seat" ]; then
+  echo "usage: crew-wake <seat> [claude args...]"
+  echo "seats: $(ls -d crew/*/ 2>/dev/null | xargs -r -n1 basename | tr '\n' ' ')"
+  exit 1
+fi
+shift
+# Every wake: session named <prefix>_<seat>_<id> (id = 4 random digits) with Remote Control on.
+# The prefix is the one word in crew/prefix, else the folder name.
+prefix=$(cat crew/prefix 2>/dev/null || basename "$PWD")
+id=$(od -An -N2 -tu2 /dev/urandom | tr -d ' ')
+name="${prefix}_${seat}_$((id % 9000 + 1000))"
+SEAT=$seat BEADS_ACTOR=$seat exec claude --name "$name" --remote-control "$name" "$@"
