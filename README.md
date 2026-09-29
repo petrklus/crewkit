@@ -49,7 +49,8 @@ In each project (the kit's own files are below, under "The kit"):
 
 ## Adding a seat
 
-1. Launch with a placeholder: `crew-wake new`. The hook sees there is no `crew/new/SEAT.md` and says so.
+1. Launch with a placeholder: `crew-wake new`. The hook sees there is no `crew/new/SEAT.md` and says so, and
+   `crew-wake` opens the session with a prompt to act on it, so the seat sets itself up without being asked.
 2. The session picks its own name from the house canon, *Stargate SG-1* and *Stargate Atlantis*
    characters, checks this project's roster for clashes (names are unique within a project; another project
    may have its own Zelenka), declares its pronouns and a

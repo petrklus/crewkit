@@ -3,6 +3,11 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.1.1 (2026-09-29)
+
+- `crew-wake` starts a seat that has no `SEAT.md` yet with an initial prompt, so `crew-wake new` sets the
+  seat up on its own. Before, the hook's "New seat" note sat in context until the user typed something.
+
 ## 1.1.0 (2026-09-29)
 
 First public release.

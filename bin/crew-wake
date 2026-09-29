@@ -17,4 +17,7 @@ shift
 prefix=$(cat crew/prefix 2>/dev/null || basename "$PWD")
 id=$(od -An -N2 -tu2 /dev/urandom | tr -d ' ')
 name="${prefix}_${seat}_$((id % 9000 + 1000))"
+# A seat without a card sets itself up at once: the SessionStart hook only adds context, it cannot start a turn.
+# The prompt goes before the extra args so an optional-valued flag (--resume) cannot swallow it.
+[ -f "crew/$seat/SEAT.md" ] || set -- "You are a new seat. Follow '## New seat' in your context now." "$@"
 SEAT=$seat BEADS_ACTOR=$seat exec claude --name "$name" --remote-control "$name" "$@"
