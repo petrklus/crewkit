@@ -59,7 +59,8 @@ In each project (the kit's own files are below, under "The kit"):
    Zelenka), declares its pronouns and a one-line citation for the name as the theme shapes it, and writes
    `crew/<name>/SEAT.md`, `diary.md` (header only) and `laurels.md`, plus a row in `ROSTER.md`. Directory
    names are lowercase ASCII (`tealc`, not `Teal'c`).
-3. Relaunch with `crew-wake <name>`.
+3. Relaunch with `crew-wake <name>`. Until then `$SEAT` and `BEADS_ACTOR` are still `new`: use your name for
+   `crew/<name>/` paths and add `--actor <name>` to every bd write, so your first beads carry your name.
 
 ## Renaming a seat
 

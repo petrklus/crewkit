@@ -3,6 +3,12 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.2.1 (2026-10-01)
+
+- A seat that wakes as `new` keeps `SEAT=new` and `BEADS_ACTOR=new` until relaunched, so its first handoff
+  pointed the diary at `crew/new/` and its first beads were created by `new`. The handoff skill and
+  "Adding a seat" now say: use the declared name for `crew/<name>/`, and `--actor <name>` on bd writes.
+
 ## 1.2.0 (2026-09-29)
 
 - Configurable theme: seat names come from `crew/THEME.md` (canon, pool, citation shape), which the

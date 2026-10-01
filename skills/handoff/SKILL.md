@@ -7,6 +7,9 @@ description: End-of-session handoff for a crew seat ("take a beat, then hand off
 
 You are being asked to close out your day, not killed. Do these in order, then say you are done.
 
+If you woke as `new` and declared a seat this session, `$SEAT` and `BEADS_ACTOR` are still `new` until the
+relaunch: use the name you declared wherever `$SEAT` appears below, and add `--actor <name>` to every bd write.
+
 1. **Beads.** `bd close <id> --reason "..."` for finished work: what shipped, how it was verified (test
    counts, browsers), what was deliberately left out. For unfinished beads, `bd comment <id> "..."` with the
    exact state: done / not done / the next command to run / anything the user said that is not yet recorded.
