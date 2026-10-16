@@ -14,7 +14,8 @@ relaunch: use the name you declared wherever `$SEAT` appears below, and add `--a
    counts, browsers), what was deliberately left out. For unfinished beads, `bd comment <id> "..."` with the
    exact state: done / not done / the next command to run / anything the user said that is not yet recorded.
 2. **Follow-ups** you noticed but did not do: `bd create "Title" -t task -d "why" --deps discovered-from:<id>`.
-3. **Export.** `bd export -o .beads/issues.jsonl` (auto-export is not reliable; this is the record that gets committed).
+3. **Export.** `bd export --include-memories -o .beads/issues.jsonl` (auto-export is not reliable; this is the record
+   that gets committed, memories included).
 4. **Diary** (only if `$SEAT` is set; check with `echo $SEAT`). Append to `crew/$SEAT/diary.md`:
 
        ## YYYY-MM-DD — short title

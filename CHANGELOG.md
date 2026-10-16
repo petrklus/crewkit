@@ -3,6 +3,28 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.3.0 (2026-10-16)
+
+- Claude Code inlines at most 10,000 characters of a hook's output; over that it saves the text to a file and
+  shows only the first 2,000. A project with 29 memories pushed the SessionStart output to 24 KB and a seat
+  ran a whole session without its identity. Now the seat line is the first line of output, `bd prime` runs
+  with `--no-memories`, the memories appear as a topic index, and the whole output is measured and cut at
+  9,500 bytes with a note if a seat's files ever push it over.
+- Memories scale: a new UserPromptSubmit hook sends the memories that match the prompt along with it (SQLite
+  FTS5: stemmed words, BM25 rank; five at most, 4,000 characters, each once per context). `PRIME.md` states
+  the key convention `<topic>-<slug>`. Needs bd 1.3 or later.
+- `PRIME.md` and the adopt skill's CLAUDE.md section check for the seat line, not for "# Beads workflow":
+  the latter was in the 2,000-character preview and passed while the seat was lost.
+- Memories are in the committed record: the SessionEnd hook, the handoff skill and the adopt skill export with
+  `--include-memories`, so a second machine or a fresh clone has them too (bd leaves them out by default).
+  bd's own auto-export cannot write memories and warns on every write once the file holds them, so the adopt
+  skill no longer turns `export.auto` on; projects that have it on should run `bd config set export.auto false`.
+- Opt-in auto-commit: with a `crew/autocommit` file in the project, the SessionEnd hook (now
+  `hooks/session-end.sh`) commits the beads export and the seat's own folder as `chore: <seat>'s handoff`,
+  touching nothing else the user has staged and never pushing.
+- The kit's own working instructions moved from `CLAUDE.md` to `.claude/CLAUDE.md`: `claude plugin validate
+  --strict` took the root file for plugin context and failed the quality gate on the warning.
+
 ## 1.2.1 (2026-10-01)
 
 - A seat that wakes as `new` keeps `SEAT=new` and `BEADS_ACTOR=new` until relaunched, so its first handoff

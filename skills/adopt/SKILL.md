@@ -9,8 +9,9 @@ Run from the project root. The kit root is two folders up from this skill's base
 explains seats and beads. Skip any step that is already done. Do not commit unless the user asks.
 
 1. **Beads.** If there is no `.beads/`:
-   `bd init --prefix <prefix> --skip-agents --skip-hooks --non-interactive --role maintainer`, then
-   `bd config set export.auto true`. The prefix is short, letters only (bd mangles a leading digit into
+   `bd init --prefix <prefix> --skip-agents --skip-hooks --non-interactive --role maintainer`. Leave bd's
+   auto-export off (it cannot write memories and warns on every write once the file holds them; the SessionEnd
+   hook and the handoff export instead). The prefix is short, letters only (bd mangles a leading digit into
    `bd_<prefix>-…`), and names the project (acme-shop might use `acme`); ask the user if it is not obvious.
    `bd init` commits on its own ("bd init: initialize beads issue tracking"); unless the user asked for commits,
    undo it with `git reset HEAD~1` while HEAD is still that commit. Check `git check-ignore
@@ -36,6 +37,8 @@ explains seats and beads. Skip any step that is already done. Do not commit unle
    Copy the kit's `THEME.md` (kit root) to `crew/THEME.md`: the Stargate default, which the user may edit
    before seating anyone.
    If the folder name is long, ask the user for a one-word session-name prefix and write it to `crew/prefix`.
+   Ask whether the SessionEnd hook should commit the beads export and each seat's diary on its own; if so,
+   create an empty `crew/autocommit`.
 4. **Existing task lists.** A TODO.md (or similar) becomes a pointer; its old content stays in git history.
    Name that commit in the pointer:
 
@@ -66,7 +69,7 @@ explains seats and beads. Skip any step that is already done. Do not commit unle
 
        ## Beads: the work log (why, not just what)
 
-       Work is tracked in beads (`bd`) with the crew kit (Claude Code plugin `crew@crewkit`, github.com/petrklus/crewkit). `bd prime` is the single source of truth for the workflow; the kit's SessionStart hook runs it at every start, resume, /clear and compaction. If your context did not start with "# Beads workflow", the plugin is missing on this machine: tell the user. In short:
+       Work is tracked in beads (`bd`) with the crew kit (Claude Code plugin `crew@crewkit`, github.com/petrklus/crewkit). `bd prime` is the single source of truth for the workflow; the kit's SessionStart hook runs it at every start, resume, /clear and compaction. If your context has no `# You are <seat>` or `# No seat` line from the crew hook, the plugin is missing on this machine or its output was cut: tell the user. In short:
 
        - A bead exists before code changes. The user's brief and reasons go in the description, decisions in `--design`, their course-corrections in comments, the outcome and verification in the close reason.
        - Beads replaces TODO.md (now a pointer; the old log is in its git history). No TodoWrite or markdown task lists.
@@ -82,11 +85,11 @@ explains seats and beads. Skip any step that is already done. Do not commit unle
 
        - A bead exists before code changes. The user's brief and reasons go in the description, decisions in `--design`, their course-corrections in comments, the outcome and verification in the close reason.
        - Beads replaces TODO.md (now a pointer; the old log is in its git history). No markdown task lists.
-       - Before you finish, close or comment your beads and run `bd export -o .beads/issues.jsonl`; commit it with the code. Commits carry a `Bead: <prefix>-xxxx` trailer.
+       - Before you finish, close or comment your beads and run `bd export --include-memories -o .beads/issues.jsonl`; commit it with the code. Commits carry a `Bead: <prefix>-xxxx` trailer.
        - `crew/` holds the Claude Code seats; leave it alone.
 
-7. **Check and hand over.** `bd export -o .beads/issues.jsonl`. Run the kit's hook as a new session would,
-   `echo '{}' | CLAUDE_PROJECT_DIR=$PWD <kit root>/hooks/session-start.sh`, and check it prints the beads
-   workflow and "## No seat". Close the bead with what changed and how it was checked. Report `git status`
+7. **Check and hand over.** `bd export --include-memories -o .beads/issues.jsonl`. Run the kit's hook as a new session would,
+   `echo '{}' | CLAUDE_PROJECT_DIR=$PWD <kit root>/hooks/session-start.sh`, and check it prints "# No seat"
+   first, then the beads workflow. Close the bead with what changed and how it was checked. Report `git status`
    and tell the user that `crew/THEME.md` is theirs to edit (where seat names come from), then to seat the
    first crew member with `crew-wake new`.

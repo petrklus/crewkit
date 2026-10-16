@@ -21,10 +21,14 @@ From the project root:
 
 `crew-wake` names the session `<prefix>_<seat>_<id>` (prefix = the one word in `crew/prefix`, else the folder
 name; id random, new each wake), turns Remote Control on, and sets `SEAT` (read by the kit's SessionStart hook,
-`hooks/session-start.sh`) and `BEADS_ACTOR` (so every bd write carries the seat's name, subagents included). The hook prints the seat card, its
-laurels, its last diary entry, its in-progress beads and the open beads assigned to it (the seat's inbox: assign
-a bead to another seat to leave it a message), so the seat wakes up reading its own diary rather than someone
-else's summary of its life. A plain `claude` still works; that session is just anonymous.
+`hooks/session-start.sh`) and `BEADS_ACTOR` (so every bd write carries the seat's name, subagents included). The hook names the seat on its first
+line, primes beads, then prints the seat card, its laurels, its last diary entry, its in-progress beads, the open
+beads assigned to it (the seat's inbox: assign a bead to another seat to leave it a message) and the topics of
+the project's memories, so the seat wakes up reading its own diary rather than someone else's summary of its
+life. A plain `claude` still works; that session is just anonymous.
+
+Claude Code inlines at most 10,000 characters of a hook's output and otherwise shows only the first 2,000, so
+the seat line comes first and the whole output is measured before it is printed.
 
 ## Ending a session: "take a beat, then hand off"
 
@@ -32,7 +36,19 @@ Do not `/exit` a seat mid-thought. Say **"Great work. Take a beat, then hand off
 seat closes or annotates its beads, appends a diary entry with what it did, learned and would do first next
 time, then says it is done. Only then exit. It is a request, not a SIGTERM. Hand off while still sharp: a
 session deep in context is a tired one, and a handoff beats an auto-compaction (which replaces the seat's
-memory with someone else's notes).
+memory with someone else's notes). The diary and the beads export are left for you to commit, unless the
+project has a `crew/autocommit` file: then the SessionEnd hook commits those two, and only those.
+
+## Memories
+
+Project knowledge that is not about one bead (how to run QA, a gotcha) goes in `bd remember "..." --key
+<topic>-<slug>`, the topic being the area (`qa-`, `docs-`). They do not all sit in context: the wake-up lists
+the topics with counts, and the UserPromptSubmit hook (`hooks/memories.py`) sends the memories that share words
+with a prompt along with it, up to five per prompt and each once per context. `bd memories <word>` reads any
+other. They travel with the beads: the export at handoff and session end includes them, so every checkout has
+the same set. The match is lexical (SQLite FTS5 from Python's standard library: stemmed words, BM25 rank, the key
+weighted above the text), not semantic; it holds for hundreds of memories, and the topic prefixes keep manual
+search workable beyond that.
 
 ## Files
 
@@ -40,6 +56,8 @@ In each project (the kit's own files are below, under "The kit"):
 
     crew/README.md         a pointer to this kit
     crew/prefix            optional: one word, the session-name prefix (`acme` for a project in acme-shop/)
+    crew/autocommit        optional: if present, the SessionEnd hook commits the beads export and the seat's own
+                           folder (`chore: <seat>'s handoff`), nothing else and no push
     crew/THEME.md          where seat names come from: canon, pool, citation shape. Written by /crew:adopt
                            from the kit's THEME.md (Stargate); the project's to edit, never overwritten
     crew/ROSTER.md         every seat: pronouns, date declared, where the name comes from, renames
@@ -81,8 +99,11 @@ seat write a diary entry about it. It inherits everything; the record keeps the 
 ## The kit
 
     .claude-plugin/          plugin.json (name, version) and marketplace.json: this repo is its own marketplace
-    hooks/hooks.json         SessionStart (prime beads, wake the seat), SubagentStart (subagents log to beads),
-                             SessionEnd (bd export). All three do nothing in a project without crew/.
+    hooks/hooks.json         SessionStart (name the seat, prime beads, wake the seat), UserPromptSubmit (the
+                             memories matching the prompt), SubagentStart (subagents log to beads), SessionEnd
+                             (bd export, and the commit if crew/autocommit exists). All four do nothing in a
+                             project without crew/.
+    hooks/memories.py        the memory index at wake-up and the per-prompt match
     skills/handoff/          /crew:handoff, "take a beat, then hand off"
     skills/adopt/            /crew:adopt, sets the kit up in a new project
     PRIME.md                 the beads rules; the SessionStart hook copies it to the project's .beads/PRIME.md
@@ -92,8 +113,8 @@ seat write a diary entry about it. It inherits everything; the record keeps the 
 
 ### Install (once per machine)
 
-Needs [beads](https://github.com/steveyegge/beads) (`npm install -g @beads/bd`) and Python 3 (the SubagentStart
-hook uses it).
+Needs [beads](https://github.com/steveyegge/beads) (`npm install -g @beads/bd`, 1.3 or later for `bd prime
+--no-memories`) and Python 3 (two hooks use it).
 
     claude plugin marketplace add petrklus/crewkit
     claude plugin install crew@crewkit

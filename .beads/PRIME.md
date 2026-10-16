@@ -23,8 +23,10 @@ copies it to `.beads/PRIME.md`; change it in the kit, not here.
 - Never falsify the record: failed runs, skipped steps and reverted approaches go in comments and close
   reasons as they happened.
 - Do NOT use TodoWrite, TaskCreate or markdown TODO lists. TODO.md is only a pointer, never write to it.
-- Project knowledge that is not about one bead (how to run QA, a gotcha) → `bd remember "..."`;
-  find it with `bd memories <word>`.
+- Project knowledge that is not about one bead (how to run QA, a gotcha) → `bd remember "..." --key <topic>-<slug>`,
+  the topic being the area it belongs to (`qa-`, `docs-`, `django-`). Memories are not all in your context: the
+  wake-up lists their topics, the ones that share words with a prompt arrive with that prompt, and
+  `bd memories <word>` reads the rest.
 - Subagents work on your behalf: give them the bead id. They record findings with `bd comment <id>` and file
   follow-ups with `bd create --deps discovered-from:<id>`. They never close beads; you do.
 
@@ -48,5 +50,6 @@ Do not use `bd edit` (opens $EDITOR and blocks).
 ## Session close: "take a beat, then hand off"
 
 Use the `/crew:handoff` skill: close or annotate beads, run the project's full test suite (the command is in
-CLAUDE.md) and record its result, check the export, append your diary entry if you have a seat, report
-`git status`.
+CLAUDE.md) and record its result, check the export, append your diary entry if `echo $SEAT` prints a name,
+report `git status`. If `$SEAT` is set but your context has no `# You are <seat>` line, your wake-up output was
+cut: read the saved file your context names, before anything else.

@@ -7,6 +7,13 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/prompt-submit.sh\"", "timeout": 20 }
+        ]
+      }
+    ],
     "SubagentStart": [
       {
         "hooks": [
@@ -17,7 +24,7 @@
     "SessionEnd": [
       {
         "hooks": [
-          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && [ -d crew ] && bd export -o .beads/issues.jsonl -q; true", "timeout": 60 }
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/session-end.sh\"", "timeout": 60 }
         ]
       }
     ]
