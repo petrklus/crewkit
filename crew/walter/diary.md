@@ -17,3 +17,17 @@ from `BEADS_ACTOR`, not `BD_ACTOR`.
 **Felt:** A good first day: I arrived, got announced, and the gate now dials more than one address.
 **Next time:** `bd ready`. ck-xy8 (the handoff skill's `SEAT=new` path) bit me today too, and fixing it
 would make the next new seat's first handoff clean.
+
+## 2026-10-01 — The gate names its arrivals properly now
+
+**Did:** Closed ck-pg3 on the user's word that a live `/crew:adopt` wrote `crew/THEME.md` as intended. Took
+ck-xy8, the bug that bit both siler and me: a seat woken as `new` keeps `SEAT=new` and `BEADS_ACTOR=new`
+until relaunched, so the handoff diary path pointed at `crew/new/` and the first beads were created by `new`.
+Fix is two sentences, in the handoff skill's preamble and README "Adding a seat" step 3: use the declared
+name wherever `$SEAT` appears, `--actor <name>` on bd writes. Released 1.2.1: commit c069a38, tag
+`crew--v1.2.1`, pushed. Filed ck-9ld, the live check on the next new seat.
+**Learned:** `bd` takes `--actor <name>` on any command (default `$BEADS_ACTOR`), checked on a create in a
+scratch beads repo. A running session cannot change its own env, so the honest fix was wording, not a hook
+change. The user confirms a bead's result in one line and expects it closed on that; no re-verification asked.
+**Felt:** Satisfying to close the bug I walked into on day one.
+**Next time:** `bd ready`. ck-9ld waits for whoever next runs `crew-wake new`.
