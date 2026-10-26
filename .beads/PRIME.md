@@ -40,8 +40,9 @@ Do not use `bd edit` (opens $EDITOR and blocks).
 
 ## Git
 
-- `.beads/issues.jsonl` is the record that goes into git: written by `bd export -o .beads/issues.jsonl` at handoff and
-  by the SessionEnd hook. Commit it with the code it explains; never edit it by hand.
+- `.beads/issues.jsonl` is the record that goes into git, memories included: written by
+  `bd export --include-memories -o .beads/issues.jsonl` at handoff and by the SessionEnd hook. Commit it with the
+  code it explains; never edit it by hand.
 - Commits that land a bead carry a trailer line `Bead: <id>`, so `git log --grep 'Bead: <id>'` finds the code.
 - The Dolt database in `.beads/embeddeddolt/` is local and untracked; other machines rebuild it from the
   JSONL (`bd import`, run by the SessionStart hook). Do not run `bd dolt push/pull`.

@@ -54,6 +54,8 @@ search workable beyond that.
 
 In each project (the kit's own files are below, under "The kit"):
 
+    .claude/settings.json  `idleCompaction: false`, written by /crew:adopt and by the hook wherever it is missing:
+                           a seat hands off, it is not compacted while idle
     crew/README.md         a pointer to this kit
     crew/prefix            optional: one word, the session-name prefix (`acme` for a project in acme-shop/)
     crew/autocommit        optional: if present, the SessionEnd hook commits the beads export and the seat's own

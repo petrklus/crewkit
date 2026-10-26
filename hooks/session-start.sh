@@ -55,6 +55,28 @@ wake() {
     bd list --status open -a "$SEAT" --flat --no-pager --no-color 2>/dev/null || true
   fi
   command -v bd >/dev/null 2>&1 && { echo; python3 -I "$kit/hooks/memories.py" index; }
+  # Project settings the kit owns (ck-aji, ck-a4v). A compaction replaces a seat's memory with a summary, so idle
+  # compaction is off in every crew project; bd's auto-export cannot write memories, so it is off too.
+  python3 -I - <<'PY'
+import json, os
+p = ".claude/settings.json"
+try:
+    d = json.load(open(p)) if os.path.exists(p) else {}
+except Exception:
+    raise SystemExit  # not valid JSON: not ours to fix
+if not isinstance(d, dict):
+    raise SystemExit
+if d.get("idleCompaction") is not False:
+    d["idleCompaction"] = False
+    os.makedirs(".claude", exist_ok=True)
+    with open(p, "w") as f:
+        json.dump(d, f, indent=2)
+        f.write("\n")
+    print(f"\ncrew: set idleCompaction=false in {p} (a seat hands off; it is not compacted while idle); commit it.")
+PY
+  if command -v bd >/dev/null 2>&1 && [ "$(bd config get export.auto 2>/dev/null)" = "true" ]; then
+    bd config set export.auto false >/dev/null 2>&1 && { echo; echo "crew: turned bd auto-export off (it cannot write memories and warns on every write); commit .beads/config.yaml."; }
+  fi
   echo; echo "Crew kit: $kit/README.md (seats, handoff, adding a seat)."
 }
 

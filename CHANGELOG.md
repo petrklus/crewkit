@@ -3,6 +3,15 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.3.1 (2026-10-26)
+
+- Every crew project has `idleCompaction: false` in `.claude/settings.json`: `/crew:adopt` writes it, and the
+  SessionStart hook writes it wherever it is missing and says so, since a plugin cannot set it itself (only
+  `agent` and `subagentStatusLine` are honoured from a plugin's settings). A compaction replaces a seat's
+  memory with a summary; a seat hands off instead.
+- The SessionStart hook turns bd's auto-export off where it is still on, so projects adopted before 1.3.0 stop
+  warning on every write once their export holds memories.
+
 ## 1.3.0 (2026-10-16)
 
 - Claude Code inlines at most 10,000 characters of a hook's output; over that it saves the text to a file and

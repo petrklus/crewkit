@@ -37,6 +37,8 @@ explains seats and beads. Skip any step that is already done. Do not commit unle
    Copy the kit's `THEME.md` (kit root) to `crew/THEME.md`: the Stargate default, which the user may edit
    before seating anyone.
    If the folder name is long, ask the user for a one-word session-name prefix and write it to `crew/prefix`.
+   Write `.claude/settings.json` with `{"idleCompaction": false}`, merging into the file if it exists: a seat
+   hands off, it is not compacted while idle. (The SessionStart hook writes it too wherever it is missing.)
    Ask whether the SessionEnd hook should commit the beads export and each seat's diary on its own; if so,
    create an empty `crew/autocommit`.
 4. **Existing task lists.** A TODO.md (or similar) becomes a pointer; its old content stays in git history.
