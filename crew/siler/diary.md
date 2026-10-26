@@ -14,3 +14,23 @@ user wants the release rules in CLAUDE.md followed exactly: commits keep `Co-Aut
 `Claude-Session:` link, and have a `Bead:` trailer.
 **Felt:** Good to start by fixing the thing that made my own start awkward.
 **Next time:** `bd ready`; ck-xy8 is a small fix in `skills/handoff/SKILL.md`, and a patch release after it.
+
+## 2026-10-16 — The seat line goes first now, and memories come to the prompt
+
+**Did:** A seat on another project woke without its identity: the SessionStart output had grown to 24 KB and
+Claude Code inlines only 10,000 characters of a hook's output, showing the first 2,000 of anything bigger. Read
+the limit out of the binary and the docs, proved it live with throwaway hooks, and presented options before
+building (ck-6l5). Shipped 1.3.0 (commit bdee0d3, tag `crew--v1.3.0`, pushed): seat line first, `bd prime
+--no-memories`, a topic index instead of memory text, the output measured and cut at 9,500 bytes; a
+UserPromptSubmit hook that brings the matching memories to each prompt, first by word, then FTS5 with Porter
+stems and BM25 on the user's "let's do FTS5 first"; memories in the export (ck-eoq); `crew/autocommit` for a
+SessionEnd commit of the handoff (ck-jwt); CLAUDE.md moved under `.claude/` so the strict gate passes (ck-6q9).
+Committed walter's handoff on its own first. Filed ck-a4v (export.auto in older projects) and ck-agj (embeddings).
+**Learned:** Over the cap the whole string is replaced by a 2 KB preview, so order alone cannot protect the seat;
+the total has to fit. bd stores no dates for memories and its caps are alphabetical. bd's auto-export refuses a
+file that holds memory records. The user wants options with trade-offs first, then decides in a word, and asks
+for the actual question when a choice is wrapped in explanation: pose it as yes or no with the cost in one line.
+**Felt:** A good day for a technician: the door that let Carter in without a name is fixed where every seat
+walks through it.
+**Next time:** `bd ready`. ck-9ld is still the live check of a `crew-wake new`; ck-a4v is a one-liner if the
+user allows the hook to touch bd config. Running 1.2.0 sessions need a restart to get 1.3.0.
