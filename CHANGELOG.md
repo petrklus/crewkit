@@ -3,6 +3,15 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.3.2 (2026-10-27)
+
+- The memories that arrive with a prompt are the ones that match it, not the ones that share one common word.
+  A prompt word found in over a third of the project's memories (its bead prefix, the year) is dropped; a
+  memory qualifies on two kept words, or on a bead id or other hyphenated token matched as a phrase, or when
+  the prompt has a single term. On a project with 55 memories, six chit-chat and bead-status prompts went from
+  five injected memories each to none, and every real hit stayed. `memories.py selftest` guards the rules and
+  is part of the quality gate.
+
 ## 1.3.1 (2026-10-26)
 
 - Every crew project has `idleCompaction: false` in `.claude/settings.json`: `/crew:adopt` writes it, and the

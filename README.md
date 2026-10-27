@@ -43,8 +43,10 @@ project has a `crew/autocommit` file: then the SessionEnd hook commits those two
 
 Project knowledge that is not about one bead (how to run QA, a gotcha) goes in `bd remember "..." --key
 <topic>-<slug>`, the topic being the area (`qa-`, `docs-`). They do not all sit in context: the wake-up lists
-the topics with counts, and the UserPromptSubmit hook (`hooks/memories.py`) sends the memories that share words
-with a prompt along with it, up to five per prompt and each once per context. `bd memories <word>` reads any
+the topics with counts, and the UserPromptSubmit hook (`hooks/memories.py`) sends the memories that match a
+prompt along with it, up to five per prompt and each once per context: a memory matches when it shares two of
+the prompt's words, or a bead id or other hyphenated token as a phrase; a word found in over a third of the
+project's memories counts for nothing. `bd memories <word>` reads any
 other. They travel with the beads: the export at handoff and session end includes them, so every checkout has
 the same set. The match is lexical (SQLite FTS5 from Python's standard library: stemmed words, BM25 rank, the key
 weighted above the text), not semantic; it holds for hundreds of memories, and the topic prefixes keep manual
