@@ -34,3 +34,21 @@ for the actual question when a choice is wrapped in explanation: pose it as yes 
 walks through it.
 **Next time:** `bd ready`. ck-9ld is still the live check of a `crew-wake new`; ck-a4v is a one-liner if the
 user allows the hook to touch bd config. Running 1.2.0 sessions need a restart to get 1.3.0.
+
+## 2026-10-29 — Two more releases: the kit owns a project setting, and memories stop guessing
+
+**Did:** 1.3.1 (74bbdb3, tag `crew--v1.3.1`): a plugin cannot set `idleCompaction` (only `agent` and
+`subagentStatusLine` survive from a plugin's settings), so the hook and `/crew:adopt` write it per project
+(ck-aji) and the hook turns bd's auto-export off where it is still on (ck-a4v). 1.3.2 (a7bbb48, tag
+`crew--v1.3.2`): another seat replayed a session and found the prompt hook injecting one relevant memory in
+22. Researched variants on the same project, then shipped four rules in `memories.py`: a word in over a third
+of the memories carries nothing, a memory needs two kept words or a bead id matched as a phrase, a single-term
+prompt still finds its memory, `ok` is a stop word; a `selftest` joined the gate (ck-p1d). Committed my
+own stale handoff first (35dc625). Both releases pushed and installed here.
+**Learned:** The two-word rule, not the frequency filter, is what removes noise; the filter only strips the
+project's own frequent tokens. A relative cut-off keeps tails short; an absolute floor is fragile. The user
+wants the research before the choice and then decides in a word; pose a decision as yes or no with its cost.
+Nested heredocs with the same terminator end the outer one early: use distinct markers.
+**Felt:** Satisfying to be told the matcher was noisy by the seat it was noisy for, and to hand it back quiet.
+**Next time:** `bd ready`. ck-9ld (live `crew-wake new`) and ck-agj (embeddings, only when a project outgrows
+lexical matching). Running sessions keep their plugin version; restart to get 1.3.2.
