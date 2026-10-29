@@ -26,7 +26,8 @@ relaunch: use the name you declared wherever `$SEAT` appears below, and add `--a
        **Next time:** the first thing to do on waking.
 
    Note the date: today's is in the session context; do not guess it.
-5. **Report.** `git status`, list the changed files, do not commit or push unless asked. End with:
+5. **Title.** `crew-title handoff`: the tab and the Remote Control label say you have handed off.
+6. **Report.** `git status`, list the changed files, do not commit or push unless asked. End with:
    "Handed off. Ready to sleep."
 
-Without a seat, do steps 1, 2, 3 and 5.
+Without a seat, do steps 1, 2, 3 and 6.

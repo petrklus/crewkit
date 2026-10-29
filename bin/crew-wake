@@ -12,12 +12,16 @@ if [ -z "$seat" ]; then
   exit 1
 fi
 shift
-# Every wake: session named <prefix>_<seat>_<id> (id = 4 random digits) with Remote Control on.
+# Every wake: session named <prefix>_<seat>_<id>:new (id = 4 random digits) with Remote Control on.
 # The prefix is the one word in crew/prefix, else the folder name.
 prefix=$(cat crew/prefix 2>/dev/null || basename "$PWD")
 id=$(od -An -N2 -tu2 /dev/urandom | tr -d ' ')
 name="${prefix}_${seat}_$((id % 9000 + 1000))"
+# The tab (tmux window) and the Remote Control label say what the seat is on: <seat>:new now, the seat's own
+# crew-title <word> later (bin/ goes on PATH; the label needs the session name, CREW_SESSION).
+[ -n "$TMUX_PANE" ] && tmux rename-window -t "$TMUX_PANE" "$seat:new"
+bin=$(cd "$(dirname "$(readlink "$0" 2>/dev/null || printf '%s' "$0")")" && pwd)
 # A seat without a card sets itself up at once: the SessionStart hook only adds context, it cannot start a turn.
 # The prompt goes before the extra args so an optional-valued flag (--resume) cannot swallow it.
 [ -f "crew/$seat/SEAT.md" ] || set -- "You are a new seat. Follow '## New seat' in your context now." "$@"
-SEAT=$seat BEADS_ACTOR=$seat exec claude --name "$name" --remote-control "$name" "$@"
+SEAT=$seat BEADS_ACTOR=$seat CREW_SESSION=$name PATH="$bin:$PATH" exec claude --name "$name:new" --remote-control "$name:new" "$@"

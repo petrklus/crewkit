@@ -1,0 +1,24 @@
+#!/bin/sh
+# crew-title <word>: say what the seat is on, in the tab (tmux window name <seat>:<word>) and in the Remote
+# Control label (<session>:<word>, the session name crew-wake gave, in CREW_SESSION). crew-wake sets <seat>:new,
+# the seat sets its work word when it starts on a bead, the handoff ends with crew-title handoff (PRIME.md, "Titles").
+word=$1
+if [ -z "$word" ] || [ -z "$SEAT" ]; then
+  echo "usage: crew-title <word>, inside a session started by crew-wake (it sets SEAT and CREW_SESSION)"
+  exit 1
+fi
+if [ -n "$TMUX_PANE" ]; then
+  tmux rename-window -t "$TMUX_PANE" "$SEAT:$word"
+  # /rename is the only road to the Remote Control label a session can take itself: type it into this session's
+  # own input, unless a draft of the user's sits there. The last '❯' line of the pane is the input box; empty,
+  # it holds a no-break space (or a 'Try "..."' placeholder before the first prompt).
+  # ponytail: screen scraping; if the prompt glyph ever changes, the fallback below prints the /rename line.
+  nbsp=$(printf '\302\240')
+  if [ -n "$CREW_SESSION" ] && tmux capture-pane -p -t "$TMUX_PANE" | grep '^❯' | tail -n 1 | grep -q -E "^❯[ $nbsp]*(Try \".*)?\$"; then
+    tmux send-keys -t "$TMUX_PANE" "/rename $CREW_SESSION:$word" Enter
+    echo "tab $SEAT:$word, label $CREW_SESSION:$word"
+    exit 0
+  fi
+  echo "tab $SEAT:$word"
+fi
+echo "Remote Control label not changed; ask the user to run: /rename ${CREW_SESSION:-<session>}:$word"

@@ -27,6 +27,13 @@ beads assigned to it (the seat's inbox: assign a bead to another seat to leave i
 the project's memories, so the seat wakes up reading its own diary rather than someone else's summary of its
 life. A plain `claude` still works; that session is just anonymous.
 
+The tab and the Remote Control label say what the seat is on. `crew-wake` names the tmux window `<seat>:new`
+and the session `<prefix>_<seat>_<id>:new`; when the seat starts on a bead it runs `crew-title <word>` (one
+lowercase word for the thing: `navfix`, `abandon`), which renames the window `<seat>:<word>` and the session
+`<prefix>_<seat>_<id>:<word>`, the latter by typing `/rename` into its own input, the only road to the Remote
+Control label a session can take itself; a draft in the input is left alone and the `/rename` line printed
+instead. The handoff ends with `crew-title handoff`. Outside tmux, `/rename` is printed for you to run.
+
 Claude Code inlines at most 10,000 characters of a hook's output and otherwise shows only the first 2,000, so
 the seat line comes first and the whole output is measured before it is printed.
 
@@ -113,6 +120,7 @@ seat write a diary entry about it. It inherits everything; the record keeps the 
     PRIME.md                 the beads rules; the SessionStart hook copies it to the project's .beads/PRIME.md
     THEME.md                 the default theme (Stargate); /crew:adopt copies it to the project's crew/THEME.md
     bin/crew-wake            the launcher
+    bin/crew-title           the tab and the Remote Control label: <seat>:<word>; on the PATH of every crew-wake session
     CHANGELOG.md             every release and what changed in it
 
 ### Install (once per machine)

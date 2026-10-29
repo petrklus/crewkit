@@ -3,6 +3,15 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.4.0 (2026-10-29)
+
+- The tab (tmux window) and the Remote Control label say what a seat is on. `crew-wake` names the window
+  `<seat>:new` and the session `<prefix>_<seat>_<id>:new`; the new `bin/crew-title <word>` (on the session's
+  PATH, no install step) renames both when the seat starts on a bead, and the handoff ends with
+  `crew-title handoff`. The label changes through `/rename` typed into the session's own input, the only road a
+  session has to it; a draft in the input is left alone and the `/rename` line printed instead. The rule is in
+  PRIME.md ("Titles").
+
 ## 1.3.2 (2026-10-27)
 
 - The memories that arrive with a prompt are the ones that match it, not the ones that share one common word.

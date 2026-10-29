@@ -1,6 +1,6 @@
 {
   "name": "crew",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Crew seats and the beads work log for Claude Code: named sessions with their own diary, beads primed at wake-up, handoff instead of /exit.",
   "author": {
     "name": "Petr Klus"

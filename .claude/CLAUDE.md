@@ -11,7 +11,7 @@ and its own marketplace. README.md explains the kit; this file is how to work on
 - A kit need found while working in another project becomes a bead here, described without that project's name.
 - Releases follow README, "Change the kit": version in `.claude-plugin/plugin.json`, an entry at the top of
   `CHANGELOG.md`, `claude plugin tag .`, `git push --follow-tags`.
-- Quality gate (the full check for handoff): `claude plugin validate --strict . && for f in hooks/*.sh bin/crew-wake; do sh -n "$f" && echo "ok $f"; done && python3 -I -c 'import ast,sys; [ast.parse(open(f).read(), f) for f in sys.argv[1:]]' hooks/*.py && python3 -I hooks/memories.py selftest`
+- Quality gate (the full check for handoff): `claude plugin validate --strict . && for f in hooks/*.sh bin/crew-*; do sh -n "$f" && echo "ok $f"; done && python3 -I -c 'import ast,sys; [ast.parse(open(f).read(), f) for f in sys.argv[1:]]' hooks/*.py && python3 -I hooks/memories.py selftest`
 
 ## Beads: the work log (why, not just what)
 

@@ -48,6 +48,13 @@ Do not use `bd edit` (opens $EDITOR and blocks).
   JSONL (`bd import`, run by the SessionStart hook). Do not run `bd dolt push/pull`.
 - Do not commit or push unless the user asks.
 
+## Titles
+
+The tab (tmux window) and the Remote Control label say what you are on. crew-wake sets `<seat>:new`; when you
+claim or create the bead you work on, run `crew-title <word>`, one lowercase word for the thing (`navfix`,
+`abandon`; the user may hand you the word), and again if the work changes. The handoff ends with
+`crew-title handoff`.
+
 ## Session close: "take a beat, then hand off"
 
 Use the `/crew:handoff` skill: close or annotate beads, run the project's full test suite (the command is in
