@@ -26,7 +26,8 @@ relaunch: use the name you declared wherever `$SEAT` appears below, and add `--a
        **Next time:** the first thing to do on waking.
 
    Note the date: today's is in the session context; do not guess it.
-5. **Title.** `crew-title handoff`: the tab and the Remote Control label say you have handed off.
+5. **Title.** `CREW_HANDOFF=1 crew-title handoff`: the tab and the Remote Control label say you have handed off
+   (bare `crew-title handoff` refuses; the variable is this skill's key).
 6. **Report.** `git status`, list the changed files, do not commit or push unless asked. End with:
    "Handed off. Ready to sleep."
 

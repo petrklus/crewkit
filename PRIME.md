@@ -52,8 +52,9 @@ Do not use `bd edit` (opens $EDITOR and blocks).
 
 The tab (tmux window) and the Remote Control label say what you are on. crew-wake sets `<seat>:new`; when you
 claim or create the bead you work on, run `crew-title <word>`, one lowercase word for the thing (`navfix`,
-`abandon`; the user may hand you the word), and again if the work changes. The handoff ends with
-`crew-title handoff`.
+`abandon`; the user may hand you the word), and again if the work changes. Closing a bead or delivering a
+report changes nothing: the word stays until the next bead. `handoff` is the /crew:handoff skill's alone, set
+when the user asks for the handoff; `crew-title handoff` on its own refuses.
 
 ## Session close: "take a beat, then hand off"
 

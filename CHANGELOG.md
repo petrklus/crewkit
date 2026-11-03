@@ -3,6 +3,15 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.4.1 (2026-11-03)
+
+- Seats set `handoff` when they closed a bead: "the handoff ends with crew-title handoff" read as "finished
+  means handoff", and the label then stayed `handoff` through the work that followed. PRIME.md's "Titles" now
+  says a closed bead changes nothing; `crew-title handoff` refuses unless the handoff skill runs it
+  (`CREW_HANDOFF=1`); the prompt hook reminds a seat whose label still says `handoff` to set its word.
+  `crew-title` also waits for the session registry to show the new label and says so when the typed `/rename`
+  did not land (seen once), instead of reporting success.
+
 ## 1.4.0 (2026-10-29)
 
 - The tab (tmux window) and the Remote Control label say what a seat is on. `crew-wake` names the window

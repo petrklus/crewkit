@@ -32,7 +32,9 @@ and the session `<prefix>_<seat>_<id>:new`; when the seat starts on a bead it ru
 lowercase word for the thing: `navfix`, `abandon`), which renames the window `<seat>:<word>` and the session
 `<prefix>_<seat>_<id>:<word>`, the latter by typing `/rename` into its own input, the only road to the Remote
 Control label a session can take itself; a draft in the input is left alone and the `/rename` line printed
-instead. The handoff ends with `crew-title handoff`. Outside tmux, `/rename` is printed for you to run.
+instead, and the session registry is checked for the new label before success is reported. Only `/crew:handoff`
+sets `handoff` (bare `crew-title handoff` refuses; a closed bead is not a handoff), and the prompt hook reminds a
+seat whose label still says `handoff` to set its word. Outside tmux, `/rename` is printed for you to run.
 
 Claude Code inlines at most 10,000 characters of a hook's output and otherwise shows only the first 2,000, so
 the seat line comes first and the whole output is measured before it is printed.
