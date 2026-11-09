@@ -3,6 +3,24 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.5.0 (2026-11-06)
+
+- A memory about how a tool behaves here (curl needs `--compressed` against the dev server; a background
+  `docker run --rm` trips the harness check) never arrived: the match was against the prompt, and the moment
+  such a memory matters is a command. Now the author declares the trigger in the key's topic (`curl-`,
+  `docker-`, `playwright-`), and a PreToolUse hook on Bash sends the memories whose topic is a token of the
+  command (a whole token or the basename of a path, never a flag, URL or path) along with its result, up to five
+  and each once per context; a subagent gets its own once. Same store, same `bd remember`; the rule is in
+  PRIME.md. Existing tool memories keyed by an area (`dev-server-curl-...`) need re-keying by the tool. A script
+  counts by its name without the extension (`./runtests.sh` fires `runtests-`), and a tool every context runs
+  (`git-`, `bd-`) reaches every context.
+- A failed Bash command (a non-zero exit or the harness timeout) is the moment such a memory matters: a
+  PostToolUseFailure hook sends the failed command's tool memories once more per context, unless they arrived
+  with that very call, and the memories that declare the failure in their text with a line
+  `Symptom: <phrase>; <phrase>` (phrases copied from real error text, matched in the error whatever the case),
+  for memories keyed by an area. A command that exits zero is not a failure; a user's interrupt is not one
+  either.
+
 ## 1.4.1 (2026-11-03)
 
 - Seats set `handoff` when they closed a bead: "the handoff ends with crew-title handoff" read as "finished

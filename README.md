@@ -51,11 +51,22 @@ project has a `crew/autocommit` file: then the SessionEnd hook commits those two
 ## Memories
 
 Project knowledge that is not about one bead (how to run QA, a gotcha) goes in `bd remember "..." --key
-<topic>-<slug>`, the topic being the area (`qa-`, `docs-`). They do not all sit in context: the wake-up lists
-the topics with counts, and the UserPromptSubmit hook (`hooks/memories.py`) sends the memories that match a
-prompt along with it, up to five per prompt and each once per context: a memory matches when it shares two of
-the prompt's words, or a bead id or other hyphenated token as a phrase; a word found in over a third of the
-project's memories counts for nothing. `bd memories <word>` reads any
+<topic>-<slug>`, the topic being the area (`qa-`, `docs-`), or the tool when the memory is about how a tool
+behaves here (`curl-`, `docker-`). They do not all sit in context: the wake-up lists the topics with counts, and
+the UserPromptSubmit hook (`hooks/memories.py`) sends the memories that match a prompt along with it, up to five
+per prompt and each once per context: a memory matches when it shares two of the prompt's words, or a bead id or
+other hyphenated token as a phrase; a word found in over a third of the project's memories counts for nothing.
+A memory about a tool is keyed by the tool, and the PreToolUse hook sends it with the first Bash command of the
+context whose tokens include that topic (`curl ...`, `/usr/bin/curl`, `./runtests.sh`, `ls qa`; never a flag,
+URL or path), in subagents too, each with its own once: the author declares the trigger in the key, since the
+moment such a memory matters is a command, not a prompt. A tool every context runs (`git-`, `bd-`) makes its
+memories reach every context, which is the right place for a shared-checkout rule and the wrong one for a
+memory about a later step. A failure is the moment such a memory matters, so when a Bash command fails (a
+non-zero exit or the harness timeout) the PostToolUseFailure hook sends its tool's memories once more per
+context, unless they arrived with that very call. A memory keyed by an area whose trigger is a failure, not a
+tool, declares it in its text with a line `Symptom: <phrase>; <phrase>`, the phrases copied from the real error
+text (`Target crashed`, `Connection refused`): it arrives when a failed command's error contains one, whatever
+the case. A command that exits zero is not a failure, whatever it printed. `bd memories <word>` reads any
 other. They travel with the beads: the export at handoff and session end includes them, so every checkout has
 the same set. The match is lexical (SQLite FTS5 from Python's standard library: stemmed words, BM25 rank, the key
 weighted above the text), not semantic; it holds for hundreds of memories, and the topic prefixes keep manual
@@ -113,10 +124,13 @@ seat write a diary entry about it. It inherits everything; the record keeps the 
 
     .claude-plugin/          plugin.json (name, version) and marketplace.json: this repo is its own marketplace
     hooks/hooks.json         SessionStart (name the seat, prime beads, wake the seat), UserPromptSubmit (the
-                             memories matching the prompt), SubagentStart (subagents log to beads), SessionEnd
-                             (bd export, and the commit if crew/autocommit exists). All four do nothing in a
-                             project without crew/.
-    hooks/memories.py        the memory index at wake-up and the per-prompt match
+                             memories matching the prompt), PreToolUse and PostToolUseFailure on Bash (the
+                             memories keyed by a tool the command runs; at a failure those again, and the ones
+                             whose Symptom line matches the error), SubagentStart (subagents log to beads),
+                             SessionEnd (bd export, and the commit if crew/autocommit exists). All six do nothing
+                             in a project without crew/.
+    hooks/memories.py        the memory index at wake-up, the per-prompt match, the per-command tool match and
+                             the match at a failed command
     skills/handoff/          /crew:handoff, "take a beat, then hand off"
     skills/adopt/            /crew:adopt, sets the kit up in a new project
     PRIME.md                 the beads rules; the SessionStart hook copies it to the project's .beads/PRIME.md
@@ -128,7 +142,7 @@ seat write a diary entry about it. It inherits everything; the record keeps the 
 ### Install (once per machine)
 
 Needs [beads](https://github.com/steveyegge/beads) (`npm install -g @beads/bd`, 1.3 or later for `bd prime
---no-memories`) and Python 3 (two hooks use it).
+--no-memories`) and Python 3 (the hooks use it).
 
     claude plugin marketplace add petrklus/crewkit
     claude plugin install crew@crewkit
