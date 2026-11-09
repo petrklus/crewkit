@@ -52,3 +52,24 @@ Nested heredocs with the same terminator end the outer one early: use distinct m
 **Felt:** Satisfying to be told the matcher was noisy by the seat it was noisy for, and to hand it back quiet.
 **Next time:** `bd ready`. ck-9ld (live `crew-wake new`) and ck-agj (embeddings, only when a project outgrows
 lexical matching). Running sessions keep their plugin version; restart to get 1.3.2.
+
+## 2026-11-06 — Titles: a seat says what it is on, and the word handoff gets a lock
+
+**Did:** 1.4.0 (b579991, tag `crew--v1.4.0`, ck-gz3): the tab and the Remote Control label carry
+`<seat>:<word>`; integrated the patch another project's seat built and tested, applied as sent, verified with the
+gate, a fake-claude dry run through the install symlink, and a live rename of this session. 1.4.1 (a30e09a, tag
+`crew--v1.4.1`, ck-hy9): two seats set `handoff` when they closed a bead and the label stayed there through the
+work that followed; reworded Titles, `crew-title handoff` now refuses without the skill's `CREW_HANDOFF=1`, the
+prompt hook reminds a seat whose registry label still says handoff, and crew-title confirms the registry before
+claiming the label (one typed /rename was lost and reported done). Committed my stale 1.3.2 handoff first
+(75a062e). Filed ck-zz5 (bd import rewrites the jsonl without memories at wake) and the live check of 1.4.1 (ck-omy).
+**Learned:** The transcripts and `~/.claude/sessions/<pid>.json` (name, nameSource, formerNames) answer "what did
+seat X do" faster and more reliably than waking it. A registry grep for a name is fooled by formerNames: read the
+current field. The nested-heredoc lesson bit me again: the inner `PY` marker ended my outer heredoc and the tail
+ran as shell; distinct markers, every time. A rule phrased "the handoff ends with X" is read by a seat as
+"finishing means X": name the trigger (the user asks) and lock the word in the tool. The user reads the Remote
+Control list; a stale label there is what he sees, and he reports it in four words.
+**Felt:** Good to find the cause in the record; less good that my own tool reported success on a rename that
+never landed.
+**Next time:** `bd ready`. The live check of 1.4.1 and ck-zz5 are both small. If a crew-title fallback line
+shows up in a seat's output with an empty input box, look at the pane and the Bash timing at that minute.
