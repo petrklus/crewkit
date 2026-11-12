@@ -25,12 +25,16 @@ copies it to `.beads/PRIME.md`; change it in the kit, not here.
 - Do NOT use TodoWrite, TaskCreate or markdown TODO lists. TODO.md is only a pointer, never write to it.
 - Project knowledge that is not about one bead (how to run QA, a gotcha) → `bd remember "..." --key <topic>-<slug>`,
   the topic being the area it belongs to (`qa-`, `docs-`, `django-`), or the tool when the memory is about how a
-  tool behaves here (`curl-`, `docker-`, `playwright-`). Memories are not all in your context: the wake-up lists
-  their topics, the ones that share words with a prompt arrive with that prompt, a tool's arrive with the first
-  command that runs the tool (so a `git-` or `bd-` memory reaches every context) and once more when a command
-  running it fails, and `bd memories <word>` reads the rest. A memory that should arrive on a failure whatever
-  the tool carries a line `Symptom: <phrase>; <phrase>`, the phrases copied from the real error text
-  (`Target crashed`, `Connection refused`): it arrives when a failed command's error contains one.
+  tool behaves here (`curl-`, `docker-`, `playwright-`). Start the text with one sentence saying what it is and
+  when it matters (that sentence is its summary), and keep it short: split one that grows past a screen.
+  Memories are not in your context: the ones that match a prompt or a command arrive with it, the best in full
+  and the others named by key and summary. When a summary fits what you are doing, read it (`bd memories <key>`)
+  before you go on. A tool's memories arrive with the first command that runs the tool (so a `git-` or `bd-`
+  memory reaches every context) and once more when a command running it fails. A memory that should arrive on
+  a failure whatever the tool carries a line `Symptom: <phrase>; <phrase>`, the phrases copied from the real
+  error text (`Target crashed`, `Connection refused`). The wake-up names only the pinned ones: a memory every
+  session must know exists carries a line `Pinned: <what it is and when it matters, in one line>`. Pin few;
+  that list is in every context.
 - Subagents work on your behalf: give them the bead id. They record findings with `bd comment <id>` and file
   follow-ups with `bd create --deps discovered-from:<id>`. They never close beads; you do.
 

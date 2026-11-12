@@ -3,6 +3,43 @@
 Every release of the crew kit and what changed in it, newest first. Versions follow semver (see README,
 "Change the kit").
 
+## 1.6.0 (2026-11-09)
+
+- The wake-up listed the topics of every memory and said nothing about any of them. Now a memory can be pinned:
+  a line `Pinned: <summary>` in its text lists it at every session start as its key and that summary (what it is
+  and when it matters; never the text), up to 1,500 characters of pins, ahead of the seat's own files so a long
+  diary entry is what the 9,500-byte cut takes. A memory that is not pinned is not listed at all.
+- Recall was measured on a real store for the first time (91 memories, 24 labelled cases). Matching by word found
+  a right memory for most prompts; what lost memories was the 4,000-character budget, which one long memory
+  filled so that the right ones ranked behind it were dropped, and what cost context was the unrelated memories
+  that came along in full (27 of them over 19 prompts). So delivery changed: a prompt now brings the best match
+  in full and names up to five more by key and summary (the `Pinned:` line, else the first sentence), a count
+  decides what is shown and not a character budget, and a memory that was only named can still arrive in full
+  later. `PRIME.md` tells the seat to start a memory with that one sentence, to keep it short, and to read a
+  named memory when its summary fits the work.
+- Recall by meaning, a second channel beside the words, with a model that runs on the machine (nothing is sent
+  anywhere): `crew-recall setup` installs ONNX Runtime and EmbeddingGemma 300M into `~/.local/share/crewkit`
+  (about 1.5 GB; pip needed; the model is under Google's Gemma terms; the download is a pinned revision checked
+  by sha256) and switches it on for every crew project on that machine. A lookup takes about 1.5 seconds and
+  0.7 GB while it runs, at most two at once; slow or busy, it answers nothing and the words carry that call. It
+  runs with each prompt, with each failed Bash command (on what the command printed) and, by default, with
+  every Bash command: `crew-recall set commands failed` keeps it to failures, `off` to prompts, and `crew-recall
+  set semantic off` turns the channel off. With the model in use a match by word alone is named, not delivered,
+  unless the prompt names the memory outright (a bead id, a key). On the real store, through these hooks: a
+  right memory in full for 16 of 19 prompts (14 by word alone), 24 of 26 right memories in full or named (22),
+  one unrelated memory in full (3), none in full on 10 unrelated prompts (3), and a right memory for 4 of 5
+  commands and errors (2). The model was chosen among six, from 23M to 0.6B parameters; the larger ones were
+  slower and no better there. One store, a small sample.
+- `crew-recall status` shows what is installed and switched on, `crew-recall test "<text>"` what a prompt (or
+  with `--command`, a command) would match and with what score. The wake-up line says which way memories are
+  matched on the machine.
+- The tool trigger read every token of a command, so a word in a heredoc of test data, a grep pattern and a
+  path fired memories about other tools. Now it reads only the programs the command runs: the first word of
+  each simple command, past `FOO=bar` and wrappers such as `sudo`, `env` and `timeout 30`, plus an interpreter's
+  script, so `python3 runtests.py` still brings a `runtests-` memory. `ls qa` no longer brings the `qa-`
+  memories: a directory in an argument is not a program. The key's tool and the `Symptom:` line still bring a
+  memory in full, and still work with no model.
+
 ## 1.5.0 (2026-11-06)
 
 - A memory about how a tool behaves here (curl needs `--compressed` against the dev server; a background

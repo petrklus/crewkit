@@ -2,8 +2,10 @@
 # SessionStart hook: name the seat, prime beads (the work log), wake the seat (README.md of the kit).
 # Plain stdout is added to the session context. Fires on startup, resume, clear and compact.
 # Claude Code inlines at most 10,000 characters of a hook's output; over that it saves the text to a file and
-# shows only the first 2,000 (ck-6l5). So: the seat line first, memories as an index (their text arrives with
-# the prompts that need it, see memories.py), and the whole output measured before it is printed.
+# shows only the first 2,000 (ck-6l5). So: the seat line first, of the memories only the pinned ones and only
+# their key and summary (a memory's text arrives with the prompt or command that needs it, see memories.py),
+# ahead of the seat's own files so a long diary entry is what the cut takes (ck-3jk.1), and the whole output
+# measured before it is printed.
 cd "${CLAUDE_PROJECT_DIR:-.}" || exit 0
 in=$(cat)
 # Only projects that adopted the kit (/crew:adopt) have crew/; everywhere else the plugin stays silent.
@@ -28,6 +30,10 @@ wake() {
     # Pick up beads written on another machine (committed export); newer local rows win.
     [ -f .beads/issues.jsonl ] && bd import -q >/dev/null 2>&1
     bd prime --no-memories 2>/dev/null || bd prime
+    echo; python3 -I "$kit/hooks/memories.py" index
+    # Where recall by meaning is set up, embed the memories this machine has not seen yet, out of the way: the
+    # lookups would do it a few at a time (hooks/recall.py). Detached from this hook's output, or the hook would wait.
+    ( nohup python3 -I "$kit/hooks/recall.py" index >/dev/null 2>&1 </dev/null & )
   else
     echo "beads: bd is not installed on this machine (npm install -g @beads/bd). Work tracking is OFF; tell the user before doing anything else."
   fi
@@ -54,7 +60,6 @@ wake() {
     echo; echo "## Open beads assigned to you (your inbox; claim with bd update <id> --claim)"
     bd list --status open -a "$SEAT" --flat --no-pager --no-color 2>/dev/null || true
   fi
-  command -v bd >/dev/null 2>&1 && { echo; python3 -I "$kit/hooks/memories.py" index; }
   # Project settings the kit owns (ck-aji, ck-a4v). A compaction replaces a seat's memory with a summary, so idle
   # compaction is off in every crew project; bd's auto-export cannot write memories, so it is off too.
   python3 -I - <<'PY'

@@ -1,0 +1,10 @@
+#!/bin/sh
+# crew-recall: recall of memories by meaning, with a model that runs on this machine (hooks/recall.py, README "Memories").
+#   crew-recall setup                 install the runtime and the model (about 1.5 GB), switch it on, index this project
+#   crew-recall status                what is installed and switched on, and where
+#   crew-recall set commands failed   a lookup only when a Bash command fails, not with every one (every|failed|off)
+#   crew-recall set semantic off      back to recall by word only (on|off); also: set floor 0.4, set command_floor 0.45
+#   crew-recall test "the tap did nothing"            what a prompt would match by meaning, with scores
+#   crew-recall test --command "ssh -L 4445 macsim"   the same for a command
+kit=$(cd "$(dirname "$0")/.." && pwd)
+exec python3 -I "$kit/hooks/recall.py" "$@"
