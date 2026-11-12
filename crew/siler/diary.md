@@ -73,3 +73,28 @@ Control list; a stale label there is what he sees, and he reports it in four wor
 never landed.
 **Next time:** `bd ready`. The live check of 1.4.1 and ck-zz5 are both small. If a crew-title fallback line
 shows up in a seat's output with an empty input box, look at the pane and the Bash timing at that minute.
+
+## 2026-11-09 — Tool memories: the key is the trigger, and a failure brings them back
+
+**Did:** 1.5.0 (931e136, tag `crew--v1.5.0`, ck-7d3), pushed and installed on this machine. A seat on another
+project reported that a memory about curl never arrived while curl hung for most of a day: the match was against
+the prompt only. Built a PreToolUse hook on Bash (`hooks/tool-use.sh`, `memories.py tool`): a memory whose key
+topic is a token of the command arrives with it, once per context, in subagents too. That seat probed the hook
+read-only against its own store twice; its findings gave the script-extension rule and the line that a `git-` or
+`bd-` topic reaches every context. On the user's question and his yes, a PostToolUseFailure hook: a failed
+command brings its tool's memories once more, and a `Symptom:` line in a memory's text is matched in the error.
+Committed my stale 1.4.1 handoff first (2b8701d). Filed ck-437 (the live check, subagents above all), ck-1f2
+(symptoms a failure hook cannot see) and ck-392 (a bead already pushed names two other projects; his decision).
+**Learned:** A logged headless run settles what the docs leave open: `claude -p --settings` with hooks that
+append their stdin to a file showed in a minute that a non-zero exit fires PostToolUseFailure with the error
+text, which turned "symptoms need a scan of every call" into "a failure hook costs nothing on success".
+`--plugin-dir` with a stub `bd` on PATH is a live test of the kit without a release (memory
+`claude-live-hook-check`). The user answers a posed yes/no in one line and means all of it: "do the 1.5.0" was
+the release. A quoted heredoc is literal, so `\\"` inside one broke my patch script; Python refusing to parse it
+is what kept the edit from landing half-applied. `json.dumps` re-lays a hand-laid file: insert text instead.
+Check a release diff for other projects' names before the commit, not after: the grep ran in the same command
+as the commit, and it was luck that the only hits were older than my change.
+**Felt:** Glad the other seat's probes shaped the rule more than my own reasoning did. Annoyed at one line of
+cleanup: `rm -f /tmp/crew-mem-*` wiped every running seat's seen-file to tidy up after a single test.
+**Next time:** `bd ready`. ck-437 first (subagent delivery is only dry-run verified), then ck-392 once the user
+has said which way; ck-zz5 and ck-omy are still small.
