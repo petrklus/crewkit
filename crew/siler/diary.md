@@ -98,3 +98,30 @@ as the commit, and it was luck that the only hits were older than my change.
 cleanup: `rm -f /tmp/crew-mem-*` wiped every running seat's seen-file to tidy up after a single test.
 **Next time:** `bd ready`. ck-437 first (subagent delivery is only dry-run verified), then ck-392 once the user
 has said which way; ck-zz5 and ck-omy are still small.
+
+## 2026-11-12 — A survey, a real store, and 1.6.0: memories by meaning
+
+**Did:** 1.6.0 (aa3e0b9, tag `crew--v1.6.0`, pushed, installed here; ck-3jk, ck-3jk.1, ck-3jk.2, ck-88a closed).
+The user asked for a survey of how other agents remember (ck-6ft): six research subagents, a claude.ai doc, the
+finding that almost nobody uses embeddings for memory and that the recall key everywhere became a sentence a
+model reads. Then he changed the brief: no index at wake-up, pinned memories only, and "a very good search ...
+locally WITHOUT any external API calls". At his word a seat on another project shared its 91 memories and 24
+labelled cases, and on that store my toy-set recommendation (recall terms) made things worse; what lost memories
+was the 4,000-character cap, and what cost context was unrelated memories in full. Measured six local models;
+a 300M one was the only one better than words on every count. Shipped: `Pinned:` lines, one memory in full and
+the rest named, recall by meaning through `hooks/recall.py` and `crew-recall` (pip --target, a pinned model
+revision with sha256, two lock slots, a lookup with every Bash command as a switch), and the tool trigger reading
+only the programs a command runs. Filed ck-dgs (lookups under load) and ck-1js (long memories score low).
+**Learned:** A toy benchmark built to defeat word matching answers only the question "what if there are no shared
+words", and a real store asked a different one. Measure on the store before recommending (memory
+`test-recall-on-a-real-store`). The docs connector fills a doc section by section while the user watches; the
+research skill's report writer was the wrong tool for that, so I wrote the sections from the notes myself. A
+flock slot released by the kernel is the whole concurrency story a hook needs; a resident process is the next
+step, not the first. ONNX Runtime refuses external weight files reached through the hub cache's symlinks: hard-link
+them into one directory. `pip install --target` is the venv this machine can have (memory
+`python-pip-target-no-ensurepip`). The user answers a posed yes/no in one line and means all of it: "yes, go for
+it" covered the fix and the release.
+**Felt:** Uneasy at having recommended recall terms from 15 notes; relieved the real store came before the code.
+**Next time:** `bd ready`. ck-392 is still the user's decision. Nothing is pinned in this repo yet: ask whether
+`hooks-output-cap-10k` should be. This session ran 1.5.0's hooks throughout; the next wake-up is the first on
+1.6.0, so watch the wake-up line and the first lookups for anything odd.
